@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -22,17 +23,29 @@ public class UserService {
     {
         userRepository.save(user);
     }
-    public User findUserById(Long id)
+    public Optional<User> findUserById(Long id)
     {
-        return userRepository.getOne(id);
+        return userRepository.findById(id);
     }
-    public void updateUser(Long id,User user)
+    public boolean updateUser(Long id,User user)
     {
-        userRepository.save(user);
+        if(userRepository.existsById(id)) {
+            userRepository.save(user);
+            return true;
+        }
+        else
+            return false;
     }
-    public void deleteUser(Long id)
+    public boolean deleteUser(Long id)
     {
-        userRepository.deleteById(id);
+        if(userRepository.existsById(id))
+        {
+            userRepository.deleteById(id);
+            return true;
+        }
+        else
+            return false;
+
     }
 
 }
